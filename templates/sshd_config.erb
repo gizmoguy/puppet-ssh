@@ -1,8 +1,5 @@
 <%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
 
-# Package generated configuration file
-# See the sshd_config(5) manpage for details
-
 # What ports, IPs and protocols we listen for
 Port <%= @port %>
 # Use these options to restrict which interfaces/protocols sshd will bind to
@@ -18,7 +15,7 @@ UsePrivilegeSeparation yes
 
 # Lifetime and size of ephemeral version 1 server key
 KeyRegenerationInterval 3600
-ServerKeyBits 768
+ServerKeyBits <%= @server_key_bits %>
 
 # Logging
 SyslogFacility AUTH
@@ -30,8 +27,16 @@ PermitRootLogin <%= @permit_root_login %>
 StrictModes yes
 
 RSAAuthentication yes
-PubkeyAuthentication yes
-#AuthorizedKeysFile	%h/.ssh/authorized_keys
+PubkeyAuthentication <%= @pubkey_authentication %>
+<%- if @authorized_keys_file.any? -%>
+<%- if @osfamily == 'RedHat' -%>
+<%# RedHat 6 has openssh-5.3, and it does not support multi AuthorizedKeysFile %>
+<%# So we take the first one%>
+AuthorizedKeysFile <%= @authorized_keys_file.flatten[0] %>
+<%- else -%>
+AuthorizedKeysFile <%= @authorized_keys_file.flatten.join(" ") %>
+<%- end -%>
+<%- end -%>
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
 IgnoreRhosts yes
@@ -64,30 +69,62 @@ PasswordAuthentication <%= @password_authentication %>
 
 X11Forwarding <%= @x11_forwarding %>
 X11DisplayOffset 10
-PrintMotd no
+PrintMotd <%= @print_motd %>
 PrintLastLog yes
 TCPKeepAlive yes
 #UseLogin no
+UseDNS <%= @use_dns %>
 
 #MaxStartups 10:30:60
-#Banner /etc/issue.net
+<% if @banner_file -%>
+Banner <%= @banner_file %>
+<% end -%>
 
-# Allow client to pass locale environment variables
-AcceptEnv LANG LC_*
+<% if @client_alive_interval -%>
+ClientAliveInterval <%= @client_alive_interval %>
+<% end -%>
+<% if @client_alive_count_max -%>
+ClientAliveCountMax <%= @client_alive_count_max %>
+<% end -%>
+
+<% if @ciphers.any? -%>
+Ciphers <%= @ciphers.join(",") %>
+<% end -%>
+
+<% if @macs.any? -%>
+MACs <%= @macs.join(",") %>
+<% end -%>
+
+# Allow setting environment variables
+AcceptEnv <%= @accept_env %>
 
 Subsystem sftp <%= @subsystem_sftp %>
 
-# Set this to 'yes' to enable PAM authentication, account processing,
-# and session processing. If this is enabled, PAM authentication will
-# be allowed through the ChallengeResponseAuthentication and
-# PasswordAuthentication.  Depending on your PAM configuration,
-# PAM authentication via ChallengeResponseAuthentication may bypass
-# the setting of "PermitRootLogin without-password".
-# If you just want the PAM account and session checks to run without
-# PAM authentication, then enable this but set PasswordAuthentication
-# and ChallengeResponseAuthentication to 'no'.
-UsePAM yes
+UsePAM <%= @use_pam %>
 
 <% if @allowed_users.any? %>
 AllowUsers <%= @allowed_users.join(" ") %>
 <% end %>
+<% if @allowed_groups.any? -%>
+AllowGroups <%= @allowed_groups.join(" ") %>
+<% end -%>
+
+<% if @password_authentication_groups.any? -%>
+<% @password_authentication_groups.each do |val| -%>
+Match Group <%= val %>
+    PasswordAuthentication yes
+<% end -%>
+<% end -%>
+
+<% if @password_authentication_users.any? -%>
+<% @password_authentication_users.each do |val| -%>
+Match User <%= val %>
+    PasswordAuthentication yes
+<% end -%>
+<% end -%>
+
+PermitTunnel <%= @permit_tunnel %>
+
+GatewayPorts <%= @gateway_ports %>
+
+PermitUserEnvironment <%= @permit_user_environment %>
