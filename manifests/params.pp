@@ -3,7 +3,7 @@ class ssh::params {
   $allowed_users                   = []
   $allowed_groups                  = []
   $authorized_keys_file            = ['%h/.ssh/authorized_keys']
-  $banner_manage                   = true
+  $banner_manage                   = false
   $banner_template                 = 'ssh/issue.erb'
   $client_alive_interval           = undef
   $client_alive_count_max          = undef
@@ -29,7 +29,7 @@ class ssh::params {
   $subsystem_sftp                  = '/usr/lib/openssh/sftp-server'
   $use_pam                         = 'yes'
   $use_dns                         = 'yes'
-  $x11_forwarding                  = 'no'
+  $x11_forwarding                  = 'yes'
   $server_key_bits                 = '1024'
   case $::osfamily {
     'Debian': {
