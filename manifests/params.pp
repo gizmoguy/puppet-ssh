@@ -4,6 +4,7 @@ class ssh::params {
   $allowed_groups                  = []
   $authorized_keys_file            = ['%h/.ssh/authorized_keys']
   $banner_manage                   = false
+  $banner_enable                   = false
   $banner_template                 = 'ssh/issue.erb'
   $client_alive_interval           = undef
   $client_alive_count_max          = undef

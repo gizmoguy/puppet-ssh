@@ -26,7 +26,6 @@ describe 'ssh::server', :type => :class do
     }
     it { is_expected.to contain_file("/etc/ssh/sshd_config").with_content %r{^HostKey /etc/ssh/ssh_host_rsa_key$} }
     it { is_expected.to contain_file("/etc/ssh/sshd_config").with_content %r{^HostKey /etc/ssh/ssh_host_dsa_key$} }
-    it { is_expected.to contain_file("/etc/ssh/sshd_config").with_content %r{^Banner /etc/issue.net$} }
   end
   context "on a Debian OS 7" do
     let :facts do
@@ -44,6 +43,7 @@ describe 'ssh::server', :type => :class do
     let :params do
       {
         :banner_file            => '/etc/banner.txt',
+        :banner_enable          => true,
         :ciphers                => ['aes128-ctr','aes192-ctr','aes256-ctr','arcfour256','arcfour128'],
         :macs                   => ['hmac-sha1','hmac-ripemd160'],
         :gateway_ports          => 'clientspecified',

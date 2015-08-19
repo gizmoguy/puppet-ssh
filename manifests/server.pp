@@ -5,6 +5,7 @@ class ssh::server (
   $authorized_keys_file           = $::ssh::params::authorized_keys_file,
   $banner_file                    = $::ssh::params::banner_file,
   $banner_manage                  = $::ssh::params::banner_manage,
+  $banner_enable                  = $::ssh::params::banner_enable,
   $banner_template                = $::ssh::params::banner_template,
   $ciphers                        = $::ssh::params::ciphers,
   $client_alive_interval          = $::ssh::params::client_alive_interval,
