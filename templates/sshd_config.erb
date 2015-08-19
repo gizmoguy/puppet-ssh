@@ -74,57 +74,54 @@ PrintLastLog yes
 TCPKeepAlive yes
 #UseLogin no
 UseDNS <%= @use_dns %>
+PermitTunnel <%= @permit_tunnel %>
+GatewayPorts <%= @gateway_ports %>
+PermitUserEnvironment <%= @permit_user_environment %>
 
 #MaxStartups 10:30:60
 <% if @banner_enable -%>
 Banner <%= @banner_file %>
 <% end -%>
-
 <% if @client_alive_interval -%>
+
 ClientAliveInterval <%= @client_alive_interval %>
 <% end -%>
 <% if @client_alive_count_max -%>
 ClientAliveCountMax <%= @client_alive_count_max %>
 <% end -%>
-
 <% if @ciphers.any? -%>
+
 Ciphers <%= @ciphers.join(",") %>
 <% end -%>
-
 <% if @macs.any? -%>
+
 MACs <%= @macs.join(",") %>
 <% end -%>
 
-# Allow setting environment variables
+# Allow client to pass locale environment variables
 AcceptEnv <%= @accept_env %>
 
 Subsystem sftp <%= @subsystem_sftp %>
 
 UsePAM <%= @use_pam %>
+<% if @allowed_users.any? -%>
 
-<% if @allowed_users.any? %>
 AllowUsers <%= @allowed_users.join(" ") %>
-<% end %>
+<% end -%>
 <% if @allowed_groups.any? -%>
 AllowGroups <%= @allowed_groups.join(" ") %>
 <% end -%>
-
 <% if @password_authentication_groups.any? -%>
+
 <% @password_authentication_groups.each do |val| -%>
 Match Group <%= val %>
     PasswordAuthentication yes
 <% end -%>
 <% end -%>
-
 <% if @password_authentication_users.any? -%>
+
 <% @password_authentication_users.each do |val| -%>
 Match User <%= val %>
     PasswordAuthentication yes
 <% end -%>
 <% end -%>
-
-PermitTunnel <%= @permit_tunnel %>
-
-GatewayPorts <%= @gateway_ports %>
-
-PermitUserEnvironment <%= @permit_user_environment %>
