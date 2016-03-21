@@ -4,14 +4,15 @@ describe 'ssh::server', :type => :class do
   context "on a Debian OS 6" do
     let :facts do
       {
-        :id                     => 'root',
-        :kernel                 => 'Linux',
-        :lsbdistcodename        => 'squeeze',
-        :osfamily               => 'Debian',
-        :operatingsystem        => 'Debian',
-        :operatingsystemrelease => '6',
-        :path                   => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-        :concat_basedir         => '/dne',
+        :id                        => 'root',
+        :kernel                    => 'Linux',
+        :lsbdistcodename           => 'squeeze',
+        :osfamily                  => 'Debian',
+        :operatingsystem           => 'Debian',
+        :operatingsystemrelease    => '6',
+        :operatingsystemmajrelease => '6',
+        :path                      => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+        :concat_basedir            => '/dne',
       }
     end
     it { is_expected.to contain_package("openssh-server").with(
@@ -30,14 +31,15 @@ describe 'ssh::server', :type => :class do
   context "on a Debian OS 7" do
     let :facts do
       {
-        :id                     => 'root',
-        :kernel                 => 'Linux',
-        :lsbdistcodename        => 'wheezy',
-        :osfamily               => 'Debian',
-        :operatingsystem        => 'Debian',
-        :operatingsystemrelease => '7',
-        :path                   => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-        :concat_basedir         => '/dne',
+        :id                        => 'root',
+        :kernel                    => 'Linux',
+        :lsbdistcodename           => 'wheezy',
+        :osfamily                  => 'Debian',
+        :operatingsystem           => 'Debian',
+        :operatingsystemrelease    => '7',
+        :operatingsystemmajrelease => '7',
+        :path                      => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+        :concat_basedir            => '/dne',
       }
     end
     let :params do

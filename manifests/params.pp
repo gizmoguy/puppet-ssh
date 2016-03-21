@@ -48,20 +48,25 @@ class ssh::params {
   }
   case $::operatingsystem {
     'Debian': {
-      case $::operatingsystemrelease {
-        /^[78].*$/ : {
-          $host_keys=['/etc/ssh/ssh_host_rsa_key','/etc/ssh/ssh_host_dsa_key','/etc/ssh/ssh_host_ecdsa_key']
-        }
-        default : {
-          $host_keys=['/etc/ssh/ssh_host_rsa_key','/etc/ssh/ssh_host_dsa_key']
-        }
+      if (versioncmp($::operatingsystemmajrelease, '8') >= 0) {
+        $service_provider  = 'systemd'
+      }
+
+      if (versioncmp($::operatingsystemmajrelease, '7') >= 0) {
+        $host_keys=['/etc/ssh/ssh_host_rsa_key','/etc/ssh/ssh_host_dsa_key','/etc/ssh/ssh_host_ecdsa_key']
+      } else {
+        $host_keys=['/etc/ssh/ssh_host_rsa_key','/etc/ssh/ssh_host_dsa_key']
       }
     }
     'Ubuntu': {
-      case $::operatingsystemrelease {
-        default : {
-          $host_keys=['/etc/ssh/ssh_host_rsa_key','/etc/ssh/ssh_host_dsa_key','/etc/ssh/ssh_host_ecdsa_key','/etc/ssh/ssh_host_ed25519_key']
-        }
+      if (versioncmp($::operatingsystemmajrelease, '15.04') >= 0) {
+        $service_provider  = 'systemd'
+      }
+
+      if (versioncmp($::operatingsystemmajrelease, '14.04') >= 0) {
+        $host_keys=['/etc/ssh/ssh_host_rsa_key','/etc/ssh/ssh_host_dsa_key','/etc/ssh/ssh_host_ecdsa_key','/etc/ssh/ssh_host_ed25519_key']
+      } else {
+        $host_keys=['/etc/ssh/ssh_host_rsa_key','/etc/ssh/ssh_host_dsa_key']
       }
     }
     default : {

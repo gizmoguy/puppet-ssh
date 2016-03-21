@@ -23,6 +23,7 @@ class ssh::server (
   $gateway_ports                  = $::ssh::params::gateway_ports,
   $print_motd                     = $::ssh::params::print_motd,
   $pubkey_authentication          = $::ssh::params::pubkey_authentication,
+  $service_provider               = $::ssh::params::service_provider,
   $subsystem_sftp                 = $::ssh::params::subsystem_sftp,
   $template                       = $::ssh::params::server_config_template,
   $use_dns                        = $::ssh::params::use_dns,
@@ -48,6 +49,7 @@ class ssh::server (
       name      => $ssh::params::service_name,
       enable    => true,
       hasstatus => true,
+      provider  => $service_provider,
       subscribe => [Package['openssh-server'], File['/etc/ssh/sshd_config']],
       require   => File['/etc/ssh/sshd_config'],
     }
