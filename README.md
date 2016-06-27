@@ -138,6 +138,15 @@ Default value:yes',
 
 Default value:no',
 
+####`permit_tty`
+
+Default value:yes',
+
+####`permit_tty_users`
+Will only work for openssh > 6.6
+
+Default value:{}',
+
 ####`print_motd `
 
 Default value: $ssh::params::print_motd,
@@ -173,6 +182,23 @@ Default value:undef,
 ####`client_alive_count_max`
 
 Default value:undef,
+
+####`match`
+
+Default value: {}
+
+```
+# Example
+ssh::server::match:
+  user:
+    john:
+      AllowTcpForwarding: 'yes'
+  group:
+    sftp:
+      ChrootDirectory:    '%h'
+      ForceCommand:       'internal-sftp'
+      AllowTcpForwarding: 'no'
+```
 
 ####`template`
 
