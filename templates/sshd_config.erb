@@ -89,7 +89,9 @@ PrintLastLog yes
 TCPKeepAlive yes
 #UseLogin no
 UseDNS <%= @use_dns %>
+<% if @permit_tty %>
 PermitTTY <%= @permit_tty %>
+<% end -%>
 PermitTunnel <%= @permit_tunnel %>
 GatewayPorts <%= @gateway_ports %>
 PermitUserEnvironment <%= @permit_user_environment %>
